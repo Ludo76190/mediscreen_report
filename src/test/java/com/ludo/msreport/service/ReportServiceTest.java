@@ -5,6 +5,7 @@ import com.ludo.msreport.Model.Patient;
 import com.ludo.msreport.Service.ReportServiceImpl;
 import com.ludo.msreport.proxies.NoteProxy;
 import com.ludo.msreport.proxies.PatientProxy;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +45,7 @@ public class ReportServiceTest {
         patient.setId(1);
         patient.setFirstName("test");
         patient.setLastName("test");
-        patient.setBirthdate(LocalDate.of(2000, 1, 1));
+        patient.setBirthdate(LocalDate.of(2000, 01, 01));
         patient.setSex("M");
         patient.setAddress("address");
         patient.setPhone("phone");
@@ -89,7 +93,7 @@ public class ReportServiceTest {
     @Test
     public void RiskEarlyOnsetMoreThirtyYearsTest() {
         note.setNote("Hémoglobine A1C Microalbumine Taille poids fumeur Anormal Cholestérol Vertige");
-        patient.setBirthdate(LocalDate.of(1972, 1, 1));
+        patient.setBirthdate(LocalDate.of(1972, 01, 01));
 
         Mockito.when(patientProxy.getPatient(1)).thenReturn(patient);
         Mockito.when(noteProxy.getNotesForPatientId(1)).thenReturn(Collections.singletonList(note));
@@ -101,7 +105,7 @@ public class ReportServiceTest {
     @Test
     public void RiskEarlyOnsetLessThirtyYearsFemaleTest() {
         note.setNote("Hémoglobine A1C Microalbumine Taille poids fumeur Anormal Cholestérol");
-        patient.setBirthdate(LocalDate.of(2010, 1, 1));
+        patient.setBirthdate(LocalDate.of(2010, 01, 01));
         patient.setSex("F");
 
         Mockito.when(patientProxy.getPatient(1)).thenReturn(patient);
@@ -114,7 +118,7 @@ public class ReportServiceTest {
     @Test
     public void RiskEarlyOnsetLessThirtyYearsMaleTest() {
         note.setNote("Hémoglobine A1C Microalbumine Taille poids fumeur");
-        patient.setBirthdate(LocalDate.of(2010, 1, 1));
+        patient.setBirthdate(LocalDate.of(2010, 01, 01));
         patient.setSex("M");
 
         Mockito.when(patientProxy.getPatient(1)).thenReturn(patient);
@@ -127,7 +131,7 @@ public class ReportServiceTest {
     @Test
     public void RiskDangerMoreThirtyYearsSixTriggersTest() {
         note.setNote("Hémoglobine A1C Microalbumine Taille poids fumeur Anormal");
-        patient.setBirthdate(LocalDate.of(1972, 1, 1));
+        patient.setBirthdate(LocalDate.of(1972, 01, 01));
 
         Mockito.when(patientProxy.getPatient(1)).thenReturn(patient);
         Mockito.when(noteProxy.getNotesForPatientId(1)).thenReturn(Collections.singletonList(note));
@@ -139,7 +143,7 @@ public class ReportServiceTest {
     @Test
     public void RiskDangerLessThirtyYearsFemaleFourTriggersTest() {
         note.setNote("Hémoglobine A1C Microalbumine Taille poids");
-        patient.setBirthdate(LocalDate.of(2000, 1, 1));
+        patient.setBirthdate(LocalDate.of(2000, 01, 01));
         patient.setSex("F");
 
         Mockito.when(patientProxy.getPatient(1)).thenReturn(patient);
@@ -152,7 +156,7 @@ public class ReportServiceTest {
     @Test
     public void RiskDangerLessThirtyYearsMaleThreeTriggersTest() {
         note.setNote("Hémoglobine A1C Microalbumine Taille");
-        patient.setBirthdate(LocalDate.of(2000, 1, 1));
+        patient.setBirthdate(LocalDate.of(2000, 01, 01));
         patient.setSex("M");
 
         Mockito.when(patientProxy.getPatient(1)).thenReturn(patient);
@@ -165,7 +169,7 @@ public class ReportServiceTest {
     @Test
     public void RiskBorderlineMoreThirtyYearsTwoTriggersTest() {
         note.setNote("Hémoglobine A1C Microalbumine");
-        patient.setBirthdate(LocalDate.of(1972, 1, 1));
+        patient.setBirthdate(LocalDate.of(1972, 01, 01));
 
         Mockito.when(patientProxy.getPatient(1)).thenReturn(patient);
         Mockito.when(noteProxy.getNotesForPatientId(1)).thenReturn(Collections.singletonList(note));
@@ -177,7 +181,7 @@ public class ReportServiceTest {
     @Test
     public void RiskNotDefinedTest() {
         note.setNote("Hémoglobine A1C taille");
-        patient.setBirthdate(LocalDate.of(2000, 1, 1));
+        patient.setBirthdate(LocalDate.of(2000, 01, 01));
         patient.setSex("F");
 
         Mockito.when(patientProxy.getPatient(1)).thenReturn(patient);
